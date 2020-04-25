@@ -1,0 +1,17 @@
+.search {
+    -webkit-appearance: none;
+    border-bottom: 1px solid #f48fb1;
+    box-shadow: 0 1px 0 0 #f48fb1;
+    outline: none;
+    padding: 10px;
+    width: 100%;
+    line-height: 30px;
+    margin-bottom: 30px;
+    border-width: 0px;
+    margin-top: 30px;
+    font-size: 24px;
+}
+
+.search::placeholder{
+    font-size: 24px;
+}

@@ -4,6 +4,7 @@ import {GlobalStyle} from './global.styles'
 import {Switch, Route, Redirect} from 'react-router-dom'
 import HomePage from './pages/homepage/HomePage.component';
 import ShopPage from './pages/shop/shop.component'
+import SearchPage from  './pages/search/search.component'
 import {default as Header} from './components/header/header.container'
 import SignInAndSignUpPage from './pages/sign-in-and-signup/sign-in-and-signup.component'
 
@@ -30,6 +31,7 @@ const App = ({ checkUserSession, currentUser }) => {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
+          <Route path="/search" component={SearchPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route 
             exact 

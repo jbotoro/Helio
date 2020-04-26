@@ -1,68 +1,200 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Helio-Live
 
-## Available Scripts
+[Live Link](https://helio-live.herokuapp.com/) . 
+  
+    
+    
+![alt text](https://github.com/jbotoro/markdown_images/blob/master/splash_page.png)
 
-In the project directory, you can run:
 
-### `npm start`
+## Overview
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Helio-live is a ecommerce web application, the goal was to create a lightweight online store utilizing some new technologies / frameworks like GraphQL, Firebase, Redux Hooks & Sagas, and the Stripe payment API
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `npm test`
+## Technologies 
+ 
+#### Backend
+  * Firebase
+  * Node/Express
+  * GraphQL/Apollo
+  
+#### Frontend
+  * React / Redux
+  * JavaScript
+  * Styled Components
+  * HTML5
+  * CSS3
+  
+## Features
+ 
+#### Users Auth
+   * Users can create and sign in with a unique username and password
+   * Users can login with Google account via Firebase or with Email
+   
+   ![loginwithGoogle](https://github.com/jbotoro/markdown_images/blob/master/googleLoginHelio.gif)
+   
+   ``` javascript
+      export const auth = firebase.auth();
+      export const firestore = firebase.firestore();
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+      export const googleProvider = new firebase.auth.GoogleAuthProvider();
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
+      export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
-### `npm run build`
+      export default firebase;
+   
+   ```
+   
+   * Users cart and cartItems persist if user logged in.
+   * Redux-persist used to ensure that state stays the same even on refresh
+   
+   ``` javascript
+    export const store = createStore(rootReducer, applyMiddleware(...middlewares))
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    export const persistor = persistStore(store);
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+    sagaMiddleware.run(rootSaga);
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    export default {store, persistor};
+   ```
+   
+   
+   ``` javascript
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+   
+   ```
+   
+   
+   ``` javascript
+    const persistConfig = {
+      key: 'root',
+      storage,
+      whitelist: ['cart']
+    };
 
-### `npm run eject`
+    const rootReducer = combineReducers({
+      user: userReducer,
+      cart: cartReducer,
+      directory: directoryReducer,
+      shop: shopReducer
+    });
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    export default persistReducer(persistConfig, rootReducer);
+   ```
+   
+   
+ 
+#### Main Page & NavBar
+   * All subsections of store listed on splash page (i.e. hats show page, jackets page etc...). 
+     
+     
+   ![featuredListSplash](https://github.com/jbotoro/markdown_images/blob/master/splash_page.png)
+   ``` javascript
+      const Directory = ({ sections }) => (
+        <DirectoryMenuContainer>
+          {sections.map(({ id, ...otherSectionProps }) => (
+            <MenuItem key={id} {...otherSectionProps} />
+           ))}
+        </DirectoryMenuContainer>
+       );
+   ```
+   * NavBar has cartIcon and cart Dropdown list, cartIcon updates with number of items in cart . 
+   ![cartItemsNavbar](https://github.com/jbotoro/markdown_images/blob/master/cart_icon.png)
+   ``` javascript
+    export const CartIcon = ({ toggleCartHidden, itemCount }) => (
+      <CartContainer onClick={toggleCartHidden}>
+        <ShoppingIcon />
+        <ItemCountContainer>{itemCount}</ItemCountContainer>
+      </CartContainer>
+    );
+   ```
+   
+   ![cartDropdown](https://github.com/jbotoro/markdown_images/blob/master/cart_dropdown.png)
+   
+   ``` javascript
+     export const CartDropdown = ({ cartItems, history, dispatch }) => (
+      <CartDropdownContainer>
+        <CartItemsContainer>
+          {cartItems.length ? (
+            cartItems.map(cartItem => (
+              <CartItem key={cartItem.id} item={cartItem} />
+            ))
+          ) : (
+              <EmptyMessageContainer>Your cart is empty</EmptyMessageContainer>
+            )}
+        </CartItemsContainer>
+        <CartDropdownButton
+          onClick={() => {
+            history.push('/checkout');
+            dispatch(toggleCartHidden());
+          }}
+        >
+          GO TO CHECKOUT
+        </CartDropdownButton>
+      </CartDropdownContainer>
+  );
+   
+   ```
+   
+   
+#### Browse clothing by collection type
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  * All clothes can be browse via collection type (i.e. hats show page displays all hats, jackets show page displays all jackets etc..) for easy and convenient browsing
+  
+  ![featuredBrowsing](https://github.com/jbotoro/markdown_images/blob/master/featuredbrowsinghelio.gif)
+  
+     
+     
+#### Checkout Page  
+ 
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+   * All items added to cart are shown in checkout page, users able to change quantity of items or remove items all together  from the cart on the checkout page 
+     
+     
+   ![checkoutPageButtons](https://github.com/jbotoro/markdown_images/blob/master/checkout_screen.png) . 
+   
+     
+     
+   * Stripe API used to handle payments, users given sample credit card information to test Stripe payment 
+     
+     
+   ![stripePayment](https://github.com/jbotoro/markdown_images/blob/master/stripe_checkout.png)
+   
+   
+   ``` javascript
+       const CheckoutPage = ({ cartItems, total }) => (
+        <CheckoutPageContainer>
+          <CheckoutHeaderContainer>
+            <HeaderBlockContainer>
+              <span>Product</span>
+            </HeaderBlockContainer>
+            <HeaderBlockContainer>
+              <span>Description</span>
+            </HeaderBlockContainer>
+            <HeaderBlockContainer>
+              <span>Quantity</span>
+            </HeaderBlockContainer>
+            <HeaderBlockContainer>
+              <span>Price</span>
+            </HeaderBlockContainer>
+            <HeaderBlockContainer>
+              <span>Remove</span>
+            </HeaderBlockContainer>
+          </CheckoutHeaderContainer>
+          {cartItems.map(cartItem => (
+            <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+          ))}
+          <TotalContainer>TOTAL: ${total}</TotalContainer>
+          <WarningContainer>
+            *Please use the following test credit card for payments*
+            <br />
+            4242 4242 4242 4242 - Exp: 11/20 - CVV: 123
+          </WarningContainer>
+          <StripeCheckoutButton price={total} />
+        </CheckoutPageContainer>
+    );
+   
+   ```

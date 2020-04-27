@@ -138,16 +138,67 @@ Helio-live is a ecommerce web application, the goal was to create a lightweight 
   );
    
    ```
-   
+
+
+#### Search clothing via Search Page
+
+  
+
+  * Search page allow for users to quickly and easily sift through the collection to find what they are looking for.
+  
+  ![featuredSearch](https://github.com/jbotoro/markdown_images/blob/master/featuredbrowsinghelio.gif). 
+  
+  ``` javascript
+  const CollectionsOverview = ({ collections, searchQuery }) => {
+
+
+  const filterCollection = (collection, search) => {
+    const collectionItems = collection.items;
+    let res = []
+    for(let i = 0; i < collectionItems.length; i++){
+      let currItem = collectionItems[i];
+      let itemName = currItem.name.toLowerCase();
+      if(itemName.includes(search.toLowerCase())){
+        res.push(currItem)
+      }
+    }
+    return res
+  }
+
+  if(searchQuery){
+    let searchRes = [];
+    for(let j = 0; j < collections.length; j++){
+      let currCollection = collections[j];
+      let copyCollection = Object.assign({}, currCollection)
+      let collectionRes = filterCollection(copyCollection, searchQuery);
+      copyCollection.items = collectionRes;
+      searchRes.push(copyCollection);
+
+    }
+    collections = searchRes;
+
+  }
+  
+  return(
+    <CollectionsOverviewContainer>
+      {collections.map(({ id, routeName, title, items }) => (
+        items.length > 0 ? <CollectionPreview key={id} routeName={routeName} title={title} items={items} /> : null
+      ))}
+    </CollectionsOverviewContainer>
+  )
+};
+  
+  ```
+     
    
 #### Browse clothing by collection type
 
-  * All clothes can be browse via collection type (i.e. hats show page displays all hats, jackets show page displays all jackets etc..) for easy and convenient browsing
+  * All clothes can be browse via collection type (i.e. hats show page displays all hats, jackets show page displays all jackets etc...) for easy and convenient browsing.  
   
-  ![featuredBrowsing](https://github.com/jbotoro/markdown_images/blob/master/featuredbrowsinghelio.gif)
+  ![featuredBrowsing](https://github.com/jbotoro/markdown_images/blob/master/featuredbrowsinghelio.gif).  
   
      
-     
+             
 #### Checkout Page  
  
 

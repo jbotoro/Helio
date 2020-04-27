@@ -47,7 +47,7 @@ ReactDOM.render(
           <App />
         </PersistGate>
       </BrowserRouter>
-    </Provider>,
+    </Provider>
   </ApolloProvider>,
   document.getElementById("root")
 );

@@ -146,7 +146,7 @@ Helio-live is a ecommerce web application, the goal was to create a lightweight 
 
   * Search page allow for users to quickly and easily sift through the collection to find what they are looking for.
   
-  ![featuredSearch](https://github.com/jbotoro/markdown_images/blob/master/featuredbrowsinghelio.gif). 
+  ![featuredSearch](https://github.com/jbotoro/markdown_images/blob/master/searchhelio.gif). 
   
   ``` javascript
   const CollectionsOverview = ({ collections, searchQuery }) => {

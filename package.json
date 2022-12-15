@@ -2,7 +2,7 @@
   "name": "helio-clothing-server",
   "version": "1.0.0",
   "engines": {
-    "node": "10.16.0",
+    "node": "18.0.0",
     "npm": "6.4.1"
   },
   "scripts": {

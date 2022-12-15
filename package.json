@@ -2,8 +2,8 @@
   "name": "helio-clothing-server",
   "version": "1.0.0",
   "engines": {
-    "node": "18.0.0",
-    "npm": "6.4.1"
+    "node": "v18.12.1",
+    "npm": "8.19.2"
   },
   "scripts": {
     "client": "cd client && npm start",
